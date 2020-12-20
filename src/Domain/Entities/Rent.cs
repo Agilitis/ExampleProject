@@ -8,7 +8,7 @@ namespace ExampleProject.Domain.Entities
         public int Id { get; set; }
         public Car Car { get; set; }
         public DateTime StartDate { get; set; }
-        public TimeSpan RentLengthInDays { get; set; }
-        public int RentPrice => Car.RentPrice;
+        public TimeSpan RentLength { get; set; }
+        public int RentPrice => Car.DailyRentPrice * RentLength.Days;
     }
 }
