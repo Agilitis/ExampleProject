@@ -157,5 +157,8 @@
       }
     }
   },
-  "defaultProject": "ExampleProject.WebUI"
+  "defaultProject": "ExampleProject.WebUI",
+  "cli": {
+    "analytics": false
+  }
 }

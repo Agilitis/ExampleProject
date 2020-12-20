@@ -8,25 +8,31 @@ namespace ExampleProject.Domain.UnitTests.Entities
     public class CarShould
     {
         [Test]
-        public void CalculateItsPriceBasedOnExtras()
+        public void CalculateItsPriceIncludingAccessories()
         {
-            var extra = new Extra
+            var accessory1 = new Accessory
             {
-                Name = "Test extra",
-                Price = 3000
+                Name = "Test accessory 1",
+                MarketPrice = 3000
+            };
+            var accessory2 = new Accessory
+            {
+                Name = "Test accessory 2",
+                MarketPrice = 2000
             };
             var car = new Car
             {
-                Price = 1000,
-                Extras = new List<Extra>
+                MarketPrice = 1000,
+                Accessories = new List<Accessory>
                 {
-                    extra
+                    accessory1,
+                    accessory2
                 }
             };
 
-            var calculatedPrice = car.Price;
+            var calculatedPrice = car.MarketPrice;
 
-            calculatedPrice.Should().Be(4000);
+            calculatedPrice.Should().Be(6000);
         }
     }
 }

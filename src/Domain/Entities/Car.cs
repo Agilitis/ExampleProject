@@ -7,16 +7,25 @@ namespace ExampleProject.Domain.Entities
 {
     public class Car : AuditableEntity
     {
-        private readonly int _price;
+        private readonly int _marketPrice;
+        private readonly int _rentPrice;
         public int Id { get; set; }
-        public IList<Extra> Extras { get; set; }
-        public int Price
+        public IList<Accessory> Accessories { get; set; }
+        public int MarketPrice
         {
             get
             {
-                return _price + Extras.Sum(extra => extra.Price);
+                return _marketPrice + Accessories.Sum(extra => extra.MarketPrice);
             }
-            init => _price = value;
+            init => _marketPrice = value;
+        }
+        public int RentPrice
+        {
+            get
+            {
+                return _rentPrice + Accessories.Sum(extra => extra.RentPrice);
+            }
+            init => _rentPrice = value;
         }
         public CarType Type { get; set; }
     }
