@@ -1,4 +1,5 @@
 ﻿using ExampleProject.Application.Common.Interfaces;
+using ExampleProject.Domain.Enums;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,9 @@ namespace ExampleProject.Application.Car.Commands
 {
     public class CreateCarCommand : IRequest<int>
     {
-        public string Car { get; set; }
+        public string ColorCode { get; set; }
+        public CarType Type { get; set; }
+        public int Price { get; set; }
     }
 
     public class CreateCarCommandHandler : IRequestHandler<CreateCarCommand, int>
@@ -25,8 +28,8 @@ namespace ExampleProject.Application.Car.Commands
         {
             var car = new Car
             {
-                
-            }
+
+            };
         }
     }
 }
