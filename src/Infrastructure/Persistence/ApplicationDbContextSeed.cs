@@ -35,7 +35,7 @@ namespace ExampleProject.Infrastructure.Persistence
                 context.TodoLists.Add(new TodoList
                 {
                     Title = "Shopping",
-                    Colour = Colour.Blue,
+                    Colour = CarColor.Blue,
                     Items =
                     {
                         new TodoItem { Title = "Apples", Done = true },

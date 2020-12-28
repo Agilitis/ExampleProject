@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ExampleProject.Domain.Common;
 using ExampleProject.Domain.Enums;
+using ExampleProject.Domain.ValueObjects;
 
 namespace ExampleProject.Domain.Entities
 {
@@ -27,6 +28,8 @@ namespace ExampleProject.Domain.Entities
             }
             init => _dailyRentPrice = value;
         }
+        public bool IsAvailable { get; set; }
         public CarType Type { get; set; }
+        public CarColor Color { get; set; }
     }
 }

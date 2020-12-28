@@ -12,7 +12,7 @@ namespace ExampleProject.Domain.UnitTests.ValueObjects
         {
             var code = "#FFFFFF";
 
-            var colour = Colour.From(code);
+            var colour = CarColor.From(code);
 
             colour.Code.Should().Be(code);
         }
@@ -20,7 +20,7 @@ namespace ExampleProject.Domain.UnitTests.ValueObjects
         [Test]
         public void ToStringReturnsCode()
         {
-            var colour = Colour.White;
+            var colour = CarColor.White;
 
             colour.ToString().Should().Be(colour.Code);
         }
@@ -28,7 +28,7 @@ namespace ExampleProject.Domain.UnitTests.ValueObjects
         [Test]
         public void ShouldPerformImplicitConversionToColourCodeString()
         {
-            string code = Colour.White;
+            string code = CarColor.White;
 
             code.Should().Be("#FFFFFF");
         }
@@ -36,15 +36,15 @@ namespace ExampleProject.Domain.UnitTests.ValueObjects
         [Test]
         public void ShouldPerformExplicitConversionGivenSupportedColourCode()
         {
-            var colour = (Colour)"#FFFFFF";
+            var colour = (CarColor)"#FFFFFF";
 
-            colour.Should().Be(Colour.White);
+            colour.Should().Be(CarColor.White);
         }
 
         [Test]
         public void ShouldThrowUnsupportedColourExceptionGivenNotSupportedColourCode()
         {
-            FluentActions.Invoking(() => Colour.From("##FF33CC"))
+            FluentActions.Invoking(() => CarColor.From("##FF33CC"))
                 .Should().Throw<UnsupportedColourException>();
         }
     }

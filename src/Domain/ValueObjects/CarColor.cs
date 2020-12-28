@@ -5,24 +5,24 @@ using System.Linq;
 
 namespace ExampleProject.Domain.ValueObjects
 {
-    public class Colour : ValueObject
+    public class CarColor : ValueObject
     {
-        static Colour()
+        static CarColor()
+        {
+        } 
+
+        private CarColor()
         {
         }
 
-        private Colour()
-        {
-        }
-
-        private Colour(string code)
+        private CarColor(string code)
         {
             Code = code;
         }
 
-        public static Colour From(string code)
+        public static CarColor From(string code)
         {
-            var colour = new Colour { Code = code };
+            var colour = new CarColor { Code = code };
 
             if (!SupportedColours.Contains(colour))
             {
@@ -32,30 +32,30 @@ namespace ExampleProject.Domain.ValueObjects
             return colour;
         }
 
-        public static Colour White => new Colour("#FFFFFF");
+        public static CarColor White => new CarColor("#FFFFFF");
 
-        public static Colour Red => new Colour("#FF5733");
+        public static CarColor Red => new CarColor("#FF5733");
 
-        public static Colour Orange => new Colour("#FFC300");
+        public static CarColor Orange => new CarColor("#FFC300");
 
-        public static Colour Yellow => new Colour("#FFFF66");
+        public static CarColor Yellow => new CarColor("#FFFF66");
 
-        public static Colour Green => new Colour("#CCFF99 ");
+        public static CarColor Green => new CarColor("#CCFF99 ");
 
-        public static Colour Blue => new Colour("#6666FF");
+        public static CarColor Blue => new CarColor("#6666FF");
 
-        public static Colour Purple => new Colour("#9966CC");
+        public static CarColor Purple => new CarColor("#9966CC");
 
-        public static Colour Grey => new Colour("#999999");
+        public static CarColor Grey => new CarColor("#999999");
 
         public string Code { get; private set; }
 
-        public static implicit operator string(Colour colour)
+        public static implicit operator string(CarColor colour)
         {
             return colour.ToString();
         }
 
-        public static explicit operator Colour(string code)
+        public static explicit operator CarColor(string code)
         {
             return From(code);
         }
@@ -65,7 +65,7 @@ namespace ExampleProject.Domain.ValueObjects
             return Code;
         }
 
-        protected static IEnumerable<Colour> SupportedColours
+        protected static IEnumerable<CarColor> SupportedColours
         {
             get
             {

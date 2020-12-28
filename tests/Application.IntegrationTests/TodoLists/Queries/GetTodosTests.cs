@@ -28,7 +28,7 @@ namespace ExampleProject.Application.IntegrationTests.TodoLists.Queries
             await AddAsync(new TodoList
             {
                 Title = "Shopping",
-                Colour = Colour.Blue,
+                Colour = CarColor.Blue,
                 Items =
                     {
                         new TodoItem { Title = "Apples", Done = true },
