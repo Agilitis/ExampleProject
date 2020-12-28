@@ -19,7 +19,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Car\" />
+    <Folder Include="CarPart\Commands\" />
+    <Folder Include="CarPart\Queries\" />
+    <Folder Include="Car\Queries\" />
+    <Folder Include="Rent\Commands\" />
+    <Folder Include="Rent\Queries\" />
+    <Folder Include="ServicePartner\Commands\" />
+    <Folder Include="ServicePartner\Queries\" />
+    <Folder Include="Service\Commands\" />
+    <Folder Include="Service\Queries\" />
   </ItemGroup>
 
 </Project>
