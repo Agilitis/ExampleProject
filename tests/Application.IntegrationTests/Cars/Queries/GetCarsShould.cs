@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ExampleProject.Application.Car.Queries.GetAllCarsQuery;
 using ExampleProject.Application.TodoLists.Queries.GetTodos;
+using ExampleProject.Domain.Entities;
 using FluentAssertions;
 using NUnit.Framework;
 using static Testing;
@@ -26,7 +27,15 @@ namespace ExampleProject.Application.IntegrationTests.Cars.Queries
                 },
                 new Domain.Entities.Car()
                 {
-                    DailyRentPrice = 300
+                    DailyRentPrice = 300,
+                    Accessories = new List<Accessory>
+                    {
+                        new Accessory
+                        {
+                            MarketPrice = 10,
+                            Name = "TestAccessory"
+                        }
+                    }
                 },
             };
 

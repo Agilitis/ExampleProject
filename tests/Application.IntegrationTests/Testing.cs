@@ -15,6 +15,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ExampleProject.Domain.Entities;
 
 [SetUpFixture]
 public class Testing
@@ -143,6 +144,18 @@ public class Testing
         var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
 
         return await context.FindAsync<TEntity>(keyValues);
+    }
+    
+    public static async Task<Car> GetCarAsync(int id)
+    {
+        using var scope = _scopeFactory.CreateScope();
+
+        var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+
+        return await context.Cars
+            .Include(x => x.Accessories)
+            .Where(x => x.Id == id)
+            .FirstOrDefaultAsync();
     }
 
     public static async Task AddAsync<TEntity>(TEntity entity)

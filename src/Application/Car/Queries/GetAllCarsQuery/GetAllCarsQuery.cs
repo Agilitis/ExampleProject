@@ -24,6 +24,7 @@ namespace ExampleProject.Application.Car.Queries.GetAllCarsQuery
         public async Task<IEnumerable<Domain.Entities.Car>> Handle(GetAllCarsQuery request, CancellationToken cancellationToken)
         {
             return await _context.Cars
+                .Include(x => x.Accessories)
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
         }

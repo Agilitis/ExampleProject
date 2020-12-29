@@ -769,6 +769,13 @@
           "rentPrice": {
             "type": "integer",
             "format": "int32"
+          },
+          "cars": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/Car"
+            }
           }
         }
       },

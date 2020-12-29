@@ -19,15 +19,27 @@ namespace ExampleProject.Infrastructure.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.1");
 
+            modelBuilder.Entity("AccessoryCar", b =>
+                {
+                    b.Property<int>("AccessoriesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CarsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AccessoriesId", "CarsId");
+
+                    b.HasIndex("CarsId");
+
+                    b.ToTable("AccessoryCar");
+                });
+
             modelBuilder.Entity("ExampleProject.Domain.Entities.Accessory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
-
-                    b.Property<int?>("CarId")
-                        .HasColumnType("int");
 
                     b.Property<int>("MarketPrice")
                         .HasColumnType("int");
@@ -39,8 +51,6 @@ namespace ExampleProject.Infrastructure.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CarId");
 
                     b.ToTable("Accessories");
                 });
@@ -587,11 +597,19 @@ namespace ExampleProject.Infrastructure.Persistence.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ExampleProject.Domain.Entities.Accessory", b =>
+            modelBuilder.Entity("AccessoryCar", b =>
                 {
+                    b.HasOne("ExampleProject.Domain.Entities.Accessory", null)
+                        .WithMany()
+                        .HasForeignKey("AccessoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ExampleProject.Domain.Entities.Car", null)
-                        .WithMany("Accessories")
-                        .HasForeignKey("CarId");
+                        .WithMany()
+                        .HasForeignKey("CarsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ExampleProject.Domain.Entities.CarPart", b =>
@@ -708,11 +726,6 @@ namespace ExampleProject.Infrastructure.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ExampleProject.Domain.Entities.Car", b =>
-                {
-                    b.Navigation("Accessories");
                 });
 
             modelBuilder.Entity("ExampleProject.Domain.Entities.Service", b =>

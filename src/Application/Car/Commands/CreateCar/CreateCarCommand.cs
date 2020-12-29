@@ -1,4 +1,7 @@
-﻿using System.Threading;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using ExampleProject.Application.Common.Interfaces;
 using ExampleProject.Domain.Enums;
@@ -14,15 +17,18 @@ namespace ExampleProject.Application.Car.Commands.CreateCar
         public CarType Type { get; set; }
         public int DailyRentPrice { get; set; }
         public int MarketPrice { get; set; }
+        public IList<Accessory> Accessories { get; set; }
     }
 
     public class CreateCarCommandHandler : IRequestHandler<CreateCarCommand, int>
     {
         private readonly IApplicationDbContext _context;
+
         public CreateCarCommandHandler(IApplicationDbContext context)
         {
             _context = context;
         }
+
         public async Task<int> Handle(CreateCarCommand request, CancellationToken cancellationToken)
         {
             var car = new Domain.Entities.Car
@@ -32,6 +38,13 @@ namespace ExampleProject.Application.Car.Commands.CreateCar
                 MarketPrice = request.MarketPrice,
                 CarColor = request.CarColor
             };
+
+            foreach (var accessory in request.Accessories)
+            {
+                var entity = await _context.Accessories.FindAsync(accessory.Id);
+                entity.Cars.Add(car);
+                car.Accessories.Add(entity);
+            }
 
             _context.Cars.Add(car);
 

@@ -1372,6 +1372,7 @@ export class Accessory implements IAccessory {
     name?: string | undefined;
     marketPrice?: number;
     rentPrice?: number;
+    cars?: Car[] | undefined;
 
     constructor(data?: IAccessory) {
         if (data) {
@@ -1388,6 +1389,11 @@ export class Accessory implements IAccessory {
             this.name = _data["name"];
             this.marketPrice = _data["marketPrice"];
             this.rentPrice = _data["rentPrice"];
+            if (Array.isArray(_data["cars"])) {
+                this.cars = [] as any;
+                for (let item of _data["cars"])
+                    this.cars!.push(Car.fromJS(item));
+            }
         }
     }
 
@@ -1404,6 +1410,11 @@ export class Accessory implements IAccessory {
         data["name"] = this.name;
         data["marketPrice"] = this.marketPrice;
         data["rentPrice"] = this.rentPrice;
+        if (Array.isArray(this.cars)) {
+            data["cars"] = [];
+            for (let item of this.cars)
+                data["cars"].push(item.toJSON());
+        }
         return data; 
     }
 }
@@ -1413,6 +1424,7 @@ export interface IAccessory {
     name?: string | undefined;
     marketPrice?: number;
     rentPrice?: number;
+    cars?: Car[] | undefined;
 }
 
 export enum CarType {
