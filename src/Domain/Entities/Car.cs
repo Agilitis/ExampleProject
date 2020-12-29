@@ -11,12 +11,16 @@ namespace ExampleProject.Domain.Entities
         private readonly int _marketPrice;
         private readonly int _dailyRentPrice;
         public int Id { get; set; }
-        public IList<Accessory> Accessories { get; set; }
+        public IList<Accessory> Accessories { get; set; } = new List<Accessory>();
         public int MarketPrice
         {
             get
             {
-                return _marketPrice + Accessories.Sum(extra => extra.MarketPrice);
+                if (Accessories.Any())
+                {
+                    return _marketPrice + Accessories.Sum(extra => extra.MarketPrice);
+                }
+                return _marketPrice;
             }
             init => _marketPrice = value;
         }
@@ -24,7 +28,11 @@ namespace ExampleProject.Domain.Entities
         {
             get
             {
-                return _dailyRentPrice + Accessories.Sum(extra => extra.RentPrice);
+                if (Accessories.Any())
+                {
+                    return _dailyRentPrice + Accessories.Sum(extra => extra.RentPrice);
+                }
+                return _dailyRentPrice;
             }
             init => _dailyRentPrice = value;
         }

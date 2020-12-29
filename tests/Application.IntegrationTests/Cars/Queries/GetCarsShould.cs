@@ -9,10 +9,10 @@ using static Testing;
 
 namespace ExampleProject.Application.IntegrationTests.Cars.Queries
 {
-    public class GetCarsTests : TestBase
+    public class GetCarsShould : TestBase
     {
         [Test]
-        public async Task ShouldReturnPriorityLevels()
+        public async Task ReturnCars()
         {
             var cars = new List<Domain.Entities.Car>
             {
