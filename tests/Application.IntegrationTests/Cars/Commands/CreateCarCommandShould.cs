@@ -1,12 +1,10 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using ExampleProject.Application.Car.Queries.GetAllCarsQuery;
 using ExampleProject.Domain.Enums;
 using FluentAssertions;
 using NUnit.Framework;
 using static Testing;
 
-namespace ExampleProject.Application.IntegrationTests.Cars.Commands.CreateCarCommand
+namespace ExampleProject.Application.IntegrationTests.Cars.Commands
 {
     public class CreateCarCommandShould : TestBase
     {

@@ -8,8 +8,8 @@ namespace ExampleProject.Domain.Entities
 {
     public class Car : AuditableEntity
     {
-        private readonly int _marketPrice;
-        private readonly int _dailyRentPrice;
+        private int _marketPrice;
+        private int _dailyRentPrice;
         public int Id { get; set; }
         public IList<Accessory> Accessories { get; set; } = new List<Accessory>();
         public int MarketPrice
@@ -22,7 +22,7 @@ namespace ExampleProject.Domain.Entities
                 }
                 return _marketPrice;
             }
-            init => _marketPrice = value;
+            set => _marketPrice = value;
         }
         public int DailyRentPrice
         {
@@ -34,7 +34,7 @@ namespace ExampleProject.Domain.Entities
                 }
                 return _dailyRentPrice;
             }
-            init => _dailyRentPrice = value;
+            set => _dailyRentPrice = value;
         }
         public bool IsAvailable { get; set; }
         public CarType Type { get; set; }
