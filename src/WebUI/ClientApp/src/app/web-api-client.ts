@@ -647,6 +647,80 @@ export class WeatherForecastClient implements IWeatherForecastClient {
     }
 }
 
+export interface ICarsClient {
+    get(query: GetAllCarsQuery): Observable<Car[]>;
+}
+
+@Injectable({
+    providedIn: 'root'
+})
+export class CarsClient implements ICarsClient {
+    private http: HttpClient;
+    private baseUrl: string;
+    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+
+    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+        this.http = http;
+        this.baseUrl = baseUrl !== undefined && baseUrl !== null ? baseUrl : "";
+    }
+
+    get(query: GetAllCarsQuery): Observable<Car[]> {
+        let url_ = this.baseUrl + "/api/Cars";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(query);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processGet(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processGet(<any>response_);
+                } catch (e) {
+                    return <Observable<Car[]>><any>_observableThrow(e);
+                }
+            } else
+                return <Observable<Car[]>><any>_observableThrow(response_);
+        }));
+    }
+
+    protected processGet(response: HttpResponseBase): Observable<Car[]> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (<any>response).error instanceof Blob ? (<any>response).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            if (Array.isArray(resultData200)) {
+                result200 = [] as any;
+                for (let item of resultData200)
+                    result200!.push(Car.fromJS(item));
+            }
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf<Car[]>(<any>null);
+    }
+}
+
 export class PaginatedListOfTodoItemDto implements IPaginatedListOfTodoItemDto {
     items?: TodoItemDto[] | undefined;
     pageIndex?: number;
@@ -1180,6 +1254,206 @@ export interface IWeatherForecast {
     temperatureC?: number;
     temperatureF?: number;
     summary?: string | undefined;
+}
+
+export abstract class AuditableEntity implements IAuditableEntity {
+    created?: Date;
+    createdBy?: string | undefined;
+    lastModified?: Date | undefined;
+    lastModifiedBy?: string | undefined;
+
+    constructor(data?: IAuditableEntity) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.created = _data["created"] ? new Date(_data["created"].toString()) : <any>undefined;
+            this.createdBy = _data["createdBy"];
+            this.lastModified = _data["lastModified"] ? new Date(_data["lastModified"].toString()) : <any>undefined;
+            this.lastModifiedBy = _data["lastModifiedBy"];
+        }
+    }
+
+    static fromJS(data: any): AuditableEntity {
+        data = typeof data === 'object' ? data : {};
+        throw new Error("The abstract class 'AuditableEntity' cannot be instantiated.");
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["created"] = this.created ? this.created.toISOString() : <any>undefined;
+        data["createdBy"] = this.createdBy;
+        data["lastModified"] = this.lastModified ? this.lastModified.toISOString() : <any>undefined;
+        data["lastModifiedBy"] = this.lastModifiedBy;
+        return data; 
+    }
+}
+
+export interface IAuditableEntity {
+    created?: Date;
+    createdBy?: string | undefined;
+    lastModified?: Date | undefined;
+    lastModifiedBy?: string | undefined;
+}
+
+export class Car extends AuditableEntity implements ICar {
+    id?: number;
+    accessories?: Accessory[] | undefined;
+    marketPrice?: number;
+    dailyRentPrice?: number;
+    isAvailable?: boolean;
+    type?: CarType;
+    carColor?: string | undefined;
+
+    constructor(data?: ICar) {
+        super(data);
+    }
+
+    init(_data?: any) {
+        super.init(_data);
+        if (_data) {
+            this.id = _data["id"];
+            if (Array.isArray(_data["accessories"])) {
+                this.accessories = [] as any;
+                for (let item of _data["accessories"])
+                    this.accessories!.push(Accessory.fromJS(item));
+            }
+            this.marketPrice = _data["marketPrice"];
+            this.dailyRentPrice = _data["dailyRentPrice"];
+            this.isAvailable = _data["isAvailable"];
+            this.type = _data["type"];
+            this.carColor = _data["carColor"];
+        }
+    }
+
+    static fromJS(data: any): Car {
+        data = typeof data === 'object' ? data : {};
+        let result = new Car();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        if (Array.isArray(this.accessories)) {
+            data["accessories"] = [];
+            for (let item of this.accessories)
+                data["accessories"].push(item.toJSON());
+        }
+        data["marketPrice"] = this.marketPrice;
+        data["dailyRentPrice"] = this.dailyRentPrice;
+        data["isAvailable"] = this.isAvailable;
+        data["type"] = this.type;
+        data["carColor"] = this.carColor;
+        super.toJSON(data);
+        return data; 
+    }
+}
+
+export interface ICar extends IAuditableEntity {
+    id?: number;
+    accessories?: Accessory[] | undefined;
+    marketPrice?: number;
+    dailyRentPrice?: number;
+    isAvailable?: boolean;
+    type?: CarType;
+    carColor?: string | undefined;
+}
+
+export class Accessory implements IAccessory {
+    id?: number;
+    name?: string | undefined;
+    marketPrice?: number;
+    rentPrice?: number;
+
+    constructor(data?: IAccessory) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.id = _data["id"];
+            this.name = _data["name"];
+            this.marketPrice = _data["marketPrice"];
+            this.rentPrice = _data["rentPrice"];
+        }
+    }
+
+    static fromJS(data: any): Accessory {
+        data = typeof data === 'object' ? data : {};
+        let result = new Accessory();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["id"] = this.id;
+        data["name"] = this.name;
+        data["marketPrice"] = this.marketPrice;
+        data["rentPrice"] = this.rentPrice;
+        return data; 
+    }
+}
+
+export interface IAccessory {
+    id?: number;
+    name?: string | undefined;
+    marketPrice?: number;
+    rentPrice?: number;
+}
+
+export enum CarType {
+    Ford = 0,
+    Opel = 1,
+    Volkswagen = 2,
+    Prosche = 3,
+    Audi = 4,
+    Mazda = 5,
+    Suzuki = 6,
+    AlfaRomeo = 7,
+}
+
+export class GetAllCarsQuery implements IGetAllCarsQuery {
+
+    constructor(data?: IGetAllCarsQuery) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+    }
+
+    static fromJS(data: any): GetAllCarsQuery {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetAllCarsQuery();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        return data; 
+    }
+}
+
+export interface IGetAllCarsQuery {
 }
 
 export interface FileResponse {

@@ -30,6 +30,7 @@ namespace ExampleProject.Domain.Entities
         }
         public bool IsAvailable { get; set; }
         public CarType Type { get; set; }
-        public CarColor Color { get; set; }
+
+        public string CarColor { get; set; }
     }
 }

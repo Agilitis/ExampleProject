@@ -17,7 +17,197 @@ namespace ExampleProject.Infrastructure.Persistence.Migrations
             modelBuilder
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.0");
+                .HasAnnotation("ProductVersion", "5.0.1");
+
+            modelBuilder.Entity("ExampleProject.Domain.Entities.Accessory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MarketPrice")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RentPrice")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.ToTable("Accessories");
+                });
+
+            modelBuilder.Entity("ExampleProject.Domain.Entities.Car", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("CarColor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DailyRentPrice")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MarketPrice")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cars");
+                });
+
+            modelBuilder.Entity("ExampleProject.Domain.Entities.CarPart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("CarParts");
+                });
+
+            modelBuilder.Entity("ExampleProject.Domain.Entities.Rent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan>("RentLength")
+                        .HasColumnType("time");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.ToTable("Rents");
+                });
+
+            modelBuilder.Entity("ExampleProject.Domain.Entities.Service", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("CarId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ServicePartnerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarId");
+
+                    b.HasIndex("ServicePartnerId");
+
+                    b.ToTable("Services");
+                });
+
+            modelBuilder.Entity("ExampleProject.Domain.Entities.ServicePartner", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ServiceFee")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ServicePartners");
+                });
 
             modelBuilder.Entity("ExampleProject.Domain.Entities.TodoItem", b =>
                 {
@@ -397,6 +587,44 @@ namespace ExampleProject.Infrastructure.Persistence.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("ExampleProject.Domain.Entities.Accessory", b =>
+                {
+                    b.HasOne("ExampleProject.Domain.Entities.Car", null)
+                        .WithMany("Accessories")
+                        .HasForeignKey("CarId");
+                });
+
+            modelBuilder.Entity("ExampleProject.Domain.Entities.CarPart", b =>
+                {
+                    b.HasOne("ExampleProject.Domain.Entities.Service", null)
+                        .WithMany("CarPartsToReplace")
+                        .HasForeignKey("ServiceId");
+                });
+
+            modelBuilder.Entity("ExampleProject.Domain.Entities.Rent", b =>
+                {
+                    b.HasOne("ExampleProject.Domain.Entities.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId");
+
+                    b.Navigation("Car");
+                });
+
+            modelBuilder.Entity("ExampleProject.Domain.Entities.Service", b =>
+                {
+                    b.HasOne("ExampleProject.Domain.Entities.Car", "Car")
+                        .WithMany()
+                        .HasForeignKey("CarId");
+
+                    b.HasOne("ExampleProject.Domain.Entities.ServicePartner", "ServicePartner")
+                        .WithMany()
+                        .HasForeignKey("ServicePartnerId");
+
+                    b.Navigation("Car");
+
+                    b.Navigation("ServicePartner");
+                });
+
             modelBuilder.Entity("ExampleProject.Domain.Entities.TodoItem", b =>
                 {
                     b.HasOne("ExampleProject.Domain.Entities.TodoList", "List")
@@ -410,7 +638,7 @@ namespace ExampleProject.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("ExampleProject.Domain.Entities.TodoList", b =>
                 {
-                    b.OwnsOne("ExampleProject.Domain.ValueObjects.Colour", "Colour", b1 =>
+                    b.OwnsOne("ExampleProject.Domain.ValueObjects.CarColor", "Colour", b1 =>
                         {
                             b1.Property<int>("TodoListId")
                                 .ValueGeneratedOnAdd()
@@ -480,6 +708,16 @@ namespace ExampleProject.Infrastructure.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ExampleProject.Domain.Entities.Car", b =>
+                {
+                    b.Navigation("Accessories");
+                });
+
+            modelBuilder.Entity("ExampleProject.Domain.Entities.Service", b =>
+                {
+                    b.Navigation("CarPartsToReplace");
                 });
 
             modelBuilder.Entity("ExampleProject.Domain.Entities.TodoList", b =>

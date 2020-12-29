@@ -436,6 +436,41 @@
           }
         }
       }
+    },
+    "/api/Cars": {
+      "get": {
+        "tags": [
+          "Cars"
+        ],
+        "operationId": "Cars_Get",
+        "requestBody": {
+          "x-name": "query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetAllCarsQuery"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Car"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -672,6 +707,122 @@
             "nullable": true
           }
         }
+      },
+      "Car": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AuditableEntity"
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "accessories": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/Accessory"
+                }
+              },
+              "marketPrice": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "dailyRentPrice": {
+                "type": "integer",
+                "format": "int32"
+              },
+              "isAvailable": {
+                "type": "boolean"
+              },
+              "type": {
+                "$ref": "#/components/schemas/CarType"
+              },
+              "carColor": {
+                "type": "string",
+                "nullable": true
+              }
+            }
+          }
+        ]
+      },
+      "Accessory": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "marketPrice": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rentPrice": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "CarType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Ford",
+          "Opel",
+          "Volkswagen",
+          "Prosche",
+          "Audi",
+          "Mazda",
+          "Suzuki",
+          "AlfaRomeo"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ]
+      },
+      "AuditableEntity": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createdBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastModified": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "lastModifiedBy": {
+            "type": "string",
+            "nullable": true
+          }
+        }
+      },
+      "GetAllCarsQuery": {
+        "type": "object",
+        "additionalProperties": false
       }
     },
     "securitySchemes": {

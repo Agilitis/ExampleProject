@@ -35,6 +35,18 @@ namespace ExampleProject.Infrastructure.Persistence
 
         public DbSet<TodoList> TodoLists { get; set; }
 
+        public DbSet<Car> Cars { get; set; }
+
+        public DbSet<Accessory> Accessories { get; set; }
+
+        public DbSet<CarPart> CarParts { get; set; }
+
+        public DbSet<Rent> Rents { get; set; }
+
+        public DbSet<Service> Services { get; set; }
+
+        public DbSet<ServicePartner> ServicePartners { get; set; }
+
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<AuditableEntity> entry in ChangeTracker.Entries<AuditableEntity>())

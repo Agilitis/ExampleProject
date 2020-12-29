@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
 using System.Threading.Tasks;
+using static Testing;
 
 namespace ExampleProject.Application.IntegrationTests
 {
-    using static Testing;
 
     public class TestBase
     {

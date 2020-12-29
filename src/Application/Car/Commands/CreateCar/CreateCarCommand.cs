@@ -1,20 +1,19 @@
-﻿using ExampleProject.Application.Common.Interfaces;
-using ExampleProject.Domain.Enums;
-using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using ExampleProject.Application.Common.Interfaces;
+using ExampleProject.Domain.Enums;
+using ExampleProject.Domain.Entities;
+using ExampleProject.Domain.ValueObjects;
+using MediatR;
 
-namespace ExampleProject.Application.Car.Commands
+namespace ExampleProject.Application.Car.Commands.CreateCar
 {
     public class CreateCarCommand : IRequest<int>
     {
-        public string ColorCode { get; set; }
+        public string CarColor { get; set; }
         public CarType Type { get; set; }
-        public int Price { get; set; }
+        public int DailyRentPrice { get; set; }
+        public int MarketPrice { get; set; }
     }
 
     public class CreateCarCommandHandler : IRequestHandler<CreateCarCommand, int>
@@ -24,12 +23,21 @@ namespace ExampleProject.Application.Car.Commands
         {
             _context = context;
         }
-        public Task<int> Handle(CreateCarCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateCarCommand request, CancellationToken cancellationToken)
         {
-            var car = new Car
+            var car = new Domain.Entities.Car
             {
-
+                Type = request.Type,
+                DailyRentPrice = request.DailyRentPrice,
+                MarketPrice = request.MarketPrice,
+                CarColor = request.CarColor
             };
+
+            _context.Cars.Add(car);
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return car.Id;
         }
     }
 }

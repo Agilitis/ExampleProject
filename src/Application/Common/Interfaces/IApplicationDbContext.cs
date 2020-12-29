@@ -10,6 +10,18 @@ namespace ExampleProject.Application.Common.Interfaces
         DbSet<TodoList> TodoLists { get; set; }
 
         DbSet<TodoItem> TodoItems { get; set; }
+        
+        DbSet<Domain.Entities.Car> Cars { get; set; }
+
+        DbSet<Accessory> Accessories { get; set; }
+
+        DbSet<CarPart> CarParts { get; set; }
+
+        DbSet<Rent> Rents { get; set; }
+
+        DbSet<Service> Services { get; set; }
+
+        DbSet<ServicePartner> ServicePartners { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

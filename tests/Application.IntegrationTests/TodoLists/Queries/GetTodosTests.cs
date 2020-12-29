@@ -5,11 +5,10 @@ using FluentAssertions;
 using NUnit.Framework;
 using System.Linq;
 using System.Threading.Tasks;
+using static Testing;
 
 namespace ExampleProject.Application.IntegrationTests.TodoLists.Queries
 {
-    using static Testing;
-
     public class GetTodosTests : TestBase
     {
         [Test]
