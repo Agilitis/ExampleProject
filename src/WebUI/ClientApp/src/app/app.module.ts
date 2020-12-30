@@ -16,6 +16,12 @@ import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { CarPartsComponent } from './car-parts/car-parts.component';
+import { CarsComponent } from './cars/cars.component';
+import { RentsComponent } from './rents/rents.component';
+import { ServicePartnersComponent } from './service-partners/service-partners.component';
+import { ServicesComponent } from './services/services.component';
+import { ApiUrlInterceptor } from 'src/interceptors/api-url-interceptor';
 
 @NgModule({
   declarations: [
@@ -24,26 +30,53 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    TodoComponent
+    TodoComponent,
+    CarPartsComponent,
+    CarsComponent,
+    RentsComponent,
+    ServicePartnersComponent,
+    ServicesComponent,
   ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
     FontAwesomeModule,
     HttpClientModule,
     FormsModule,
     ApiAuthorizationModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
-      { path: 'todo', component: TodoComponent, canActivate: [AuthorizeGuard] },
+      { path: "", component: HomeComponent, pathMatch: "full" },
+      { path: "counter", component: CounterComponent },
+      { path: "fetch-data", component: FetchDataComponent },
+      { path: "todo", component: TodoComponent, canActivate: [AuthorizeGuard] },
+      { path: "cars", component: CarsComponent, canActivate: [AuthorizeGuard] },
+      {
+        path: "car-parts",
+        component: CarPartsComponent,
+        canActivate: [AuthorizeGuard],
+      },
+      {
+        path: "rents",
+        component: RentsComponent,
+        canActivate: [AuthorizeGuard],
+      },
+      {
+        path: "service-partners",
+        component: ServicePartnersComponent,
+        canActivate: [AuthorizeGuard],
+      },
+      {
+        path: "services",
+        component: ServicesComponent,
+        canActivate: [AuthorizeGuard],
+      },
     ]),
     BrowserAnimationsModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ApiUrlInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
