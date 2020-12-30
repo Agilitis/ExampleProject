@@ -17,7 +17,7 @@ namespace ExampleProject.Application.Car.Commands.CreateCar
         public CarType Type { get; set; }
         public int DailyRentPrice { get; set; }
         public int MarketPrice { get; set; }
-        public IList<Accessory> Accessories { get; set; }
+        public IList<Accessory> Accessories { get; set; } = new List<Accessory>();
     }
 
     public class CreateCarCommandHandler : IRequestHandler<CreateCarCommand, int>
