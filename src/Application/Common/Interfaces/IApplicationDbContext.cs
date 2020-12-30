@@ -15,13 +15,13 @@ namespace ExampleProject.Application.Common.Interfaces
 
         DbSet<Accessory> Accessories { get; set; }
 
-        DbSet<CarPart> CarParts { get; set; }
+        DbSet<Domain.Entities.CarPart> CarParts { get; set; }
 
-        DbSet<Rent> Rents { get; set; }
+        DbSet<Domain.Entities.Rent> Rents { get; set; }
 
-        DbSet<Service> Services { get; set; }
+        DbSet<Domain.Entities.Service> Services { get; set; }
 
-        DbSet<ServicePartner> ServicePartners { get; set; }
+        DbSet<Domain.Entities.ServicePartner> ServicePartners { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
