@@ -7,6 +7,7 @@ using ExampleProject.Application.Car.Queries.GetAllCarsQuery;
 using ExampleProject.Application.CarPart.Commands.CreateCarPart;
 using ExampleProject.Application.CarPart.Commands.DeleteCarPart;
 using ExampleProject.Application.CarPart.Commands.UpdateCarPart;
+using ExampleProject.Application.CarPart.Queries.GetAllCarPartsCommand;
 using ExampleProject.Application.Rent.Queries.GetAllRent;
 using ExampleProject.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -18,7 +19,7 @@ namespace ExampleProject.WebUI.Controllers.CarParts
     public class CarPartsController : ApiControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CarPart>>> GetAllCarParts([FromQuery] GetAllRentQuery query)
+        public async Task<ActionResult<IEnumerable<CarPart>>> GetAllCarParts([FromQuery] GetAllCarPartQuery query)
         {
             return Ok(await Mediator.Send(query));
         }
