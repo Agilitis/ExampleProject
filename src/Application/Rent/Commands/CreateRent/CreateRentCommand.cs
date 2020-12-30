@@ -11,6 +11,7 @@ namespace ExampleProject.Application.Rent.Commands.CreateRent
         public int CarId { get; set; }
         public int RentLengthInDays { get; set; }
         public DateTime StartDate { get; set; }
+        public string UserId { get; set; }
     }
     
     public class CreateRentCommandHandler : IRequestHandler<CreateRentCommand, int>
@@ -24,12 +25,12 @@ namespace ExampleProject.Application.Rent.Commands.CreateRent
 
         public async Task<int> Handle(CreateRentCommand request, CancellationToken cancellationToken)
         {
-            var car = await _context.Cars.FindAsync(request.CarId);
             var rent = new Domain.Entities.Rent
             {
-                Car = car,
-                RentLength = TimeSpan.FromDays(request.RentLengthInDays),
-                StartDate = request.StartDate
+                CarId = request.CarId,
+                RentLengthInDays = request.RentLengthInDays,
+                StartDate = request.StartDate,
+                UserId = request.UserId
             };
 
             _context.Rents.Add(rent);

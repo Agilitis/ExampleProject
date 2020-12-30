@@ -4,14 +4,16 @@ using ExampleProject.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ExampleProject.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201229105530_ExampleMigration")]
+    partial class ExampleMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,27 +21,15 @@ namespace ExampleProject.Infrastructure.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.1");
 
-            modelBuilder.Entity("AccessoryCar", b =>
-                {
-                    b.Property<int>("AccessoriesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CarsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AccessoriesId", "CarsId");
-
-                    b.HasIndex("CarsId");
-
-                    b.ToTable("AccessoryCar");
-                });
-
             modelBuilder.Entity("ExampleProject.Domain.Entities.Accessory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
+
+                    b.Property<int?>("CarId")
+                        .HasColumnType("int");
 
                     b.Property<int>("MarketPrice")
                         .HasColumnType("int");
@@ -51,6 +41,8 @@ namespace ExampleProject.Infrastructure.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CarId");
 
                     b.ToTable("Accessories");
                 });
@@ -139,14 +131,11 @@ namespace ExampleProject.Infrastructure.Persistence.Migrations
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RentLengthInDays")
-                        .HasColumnType("int");
+                    b.Property<TimeSpan>("RentLength")
+                        .HasColumnType("time");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -600,19 +589,11 @@ namespace ExampleProject.Infrastructure.Persistence.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("AccessoryCar", b =>
+            modelBuilder.Entity("ExampleProject.Domain.Entities.Accessory", b =>
                 {
-                    b.HasOne("ExampleProject.Domain.Entities.Accessory", null)
-                        .WithMany()
-                        .HasForeignKey("AccessoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ExampleProject.Domain.Entities.Car", null)
-                        .WithMany()
-                        .HasForeignKey("CarsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Accessories")
+                        .HasForeignKey("CarId");
                 });
 
             modelBuilder.Entity("ExampleProject.Domain.Entities.CarPart", b =>
@@ -729,6 +710,11 @@ namespace ExampleProject.Infrastructure.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ExampleProject.Domain.Entities.Car", b =>
+                {
+                    b.Navigation("Accessories");
                 });
 
             modelBuilder.Entity("ExampleProject.Domain.Entities.Service", b =>

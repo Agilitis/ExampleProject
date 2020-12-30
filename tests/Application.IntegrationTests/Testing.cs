@@ -157,6 +157,18 @@ public class Testing
             .Where(x => x.Id == id)
             .FirstOrDefaultAsync();
     }
+    
+    public static async Task<Rent> GetRentAsync(int id)
+    {
+        using var scope = _scopeFactory.CreateScope();
+
+        var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+
+        return await context.Rents
+            .Include(x => x.Car)
+            .Where(x => x.Id == id)
+            .FirstOrDefaultAsync();
+    }
 
     public static async Task AddAsync<TEntity>(TEntity entity)
         where TEntity : class
