@@ -22,6 +22,7 @@ import { RentsComponent } from './rents/rents.component';
 import { ServicePartnersComponent } from './service-partners/service-partners.component';
 import { ServicesComponent } from './services/services.component';
 import { ApiUrlInterceptor } from 'src/interceptors/api-url-interceptor';
+import { MatTableModule } from "@angular/material/table";
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { ApiUrlInterceptor } from 'src/interceptors/api-url-interceptor';
       },
     ]),
     BrowserAnimationsModule,
+    MatTableModule,
     ModalModule.forRoot(),
   ],
   providers: [
