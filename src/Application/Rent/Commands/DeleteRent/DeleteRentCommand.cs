@@ -8,7 +8,7 @@ namespace ExampleProject.Application.Rent.Commands.DeleteRent
 {
     public class DeleteRentCommand : IRequest<Unit>
     {
-        public int RentId { get; set; }   
+        public int Id { get; set; }   
     }
     
     public class DeleteRentCommandHandler : IRequestHandler<DeleteRentCommand, Unit>
@@ -22,7 +22,7 @@ namespace ExampleProject.Application.Rent.Commands.DeleteRent
 
         public async Task<Unit> Handle(DeleteRentCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _context.Rents.FindAsync(request.RentId);
+            var entity = await _context.Rents.FindAsync(request.Id);
 
             if (entity == null)
             {

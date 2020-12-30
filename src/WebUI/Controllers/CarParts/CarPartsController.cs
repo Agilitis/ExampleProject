@@ -4,29 +4,33 @@ using ExampleProject.Application.Car.Commands.CreateCar;
 using ExampleProject.Application.Car.Commands.DeleteCar;
 using ExampleProject.Application.Car.Commands.UpdateCar;
 using ExampleProject.Application.Car.Queries.GetAllCarsQuery;
+using ExampleProject.Application.CarPart.Commands.CreateCarPart;
+using ExampleProject.Application.CarPart.Commands.DeleteCarPart;
+using ExampleProject.Application.CarPart.Commands.UpdateCarPart;
+using ExampleProject.Application.Rent.Queries.GetAllRent;
 using ExampleProject.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ExampleProject.WebUI.Controllers.Cars
+namespace ExampleProject.WebUI.Controllers.CarParts
 {
     [Authorize]
-    public class CarsController : ApiControllerBase
+    public class CarPartsController : ApiControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Car>>> GetAllCars([FromQuery] GetAllCarsQuery query)
+        public async Task<ActionResult<IEnumerable<CarPart>>> GetAllCarParts([FromQuery] GetAllRentQuery query)
         {
             return Ok(await Mediator.Send(query));
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Create(CreateCarCommand command)
+        public async Task<ActionResult<int>> Create(CreateCarPartCommand command)
         {
             return await Mediator.Send(command);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, UpdateCarCommand command)
+        public async Task<ActionResult> Update(int id, UpdateCarPartCommand command)
         {
             if (id != command.Id)
             {
@@ -41,7 +45,7 @@ namespace ExampleProject.WebUI.Controllers.Cars
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            await Mediator.Send(new DeleteCarCommand() { Id = id });
+            await Mediator.Send(new DeleteCarPartCommand() { Id = id });
 
             return NoContent();
         }

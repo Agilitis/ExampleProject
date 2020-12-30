@@ -9,7 +9,7 @@ namespace ExampleProject.Application.Rent.Commands.UpdateRent
 {
     public class UpdateRentCommand : IRequest<Unit>
     {
-        public int RentId { get; set; }
+        public int Id { get; set; }
         public int RentLengthInDays { get; set; }
         public DateTime StartDate { get; set; }
     }
@@ -19,7 +19,7 @@ namespace ExampleProject.Application.Rent.Commands.UpdateRent
         private readonly IApplicationDbContext _context;
         public async Task<Unit> Handle(UpdateRentCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _context.Rents.FindAsync(request.RentId);
+            var entity = await _context.Rents.FindAsync(request.Id);
 
             if (entity == null)
             {
