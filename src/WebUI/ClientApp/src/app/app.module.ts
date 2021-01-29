@@ -21,7 +21,7 @@ import { CarsComponent } from './cars/cars.component';
 import { RentsComponent } from './rents/rents.component';
 import { ServicePartnersComponent } from './service-partners/service-partners.component';
 import { ServicesComponent } from './services/services.component';
-import { ApiUrlInterceptor } from 'src/interceptors/api-url-interceptor';
+import { ApiInterceptor } from "src/app/interceptors/ApiInterceptor";
 import { MatTableModule } from "@angular/material/table";
 
 @NgModule({
@@ -77,7 +77,7 @@ import { MatTableModule } from "@angular/material/table";
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ApiUrlInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })

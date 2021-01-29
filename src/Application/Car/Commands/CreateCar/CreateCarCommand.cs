@@ -46,6 +46,8 @@ namespace ExampleProject.Application.Car.Commands.CreateCar
                 car.Accessories.Add(entity);
             }
 
+            car.DomainEvents.Add()
+
             _context.Cars.Add(car);
 
             await _context.SaveChangesAsync(cancellationToken);

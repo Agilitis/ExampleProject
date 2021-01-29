@@ -7,7 +7,7 @@ using ExampleProject.Domain.ValueObjects;
 
 namespace ExampleProject.Domain.Entities
 {
-    public class Car : AuditableEntity
+    public class Car : AuditableEntity, IHasDomainEvent
     {
         private int _marketPrice;
         private int _dailyRentPrice;
@@ -41,5 +41,7 @@ namespace ExampleProject.Domain.Entities
         public CarType Type { get; set; }
 
         public string CarColor { get; set; }
+
+        public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
     }
 }
