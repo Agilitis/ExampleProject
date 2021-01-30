@@ -1,14 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using ExampleProject.Application.Common.Interfaces;
-using ExampleProject.Domain.Enums;
 using ExampleProject.Domain.Entities;
-using ExampleProject.Domain.ValueObjects;
-using MediatR;
+using ExampleProject.Domain.Enums;
 using ExampleProject.Domain.Events;
+using MediatR;
 
 namespace ExampleProject.Application.Car.Commands.CreateCar
 {
