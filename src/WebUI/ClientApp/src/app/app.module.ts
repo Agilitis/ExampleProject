@@ -24,6 +24,7 @@ import { ServicesComponent } from './services/services.component';
 import { ApiInterceptor } from "src/app/interceptors/ApiInterceptor";
 import { MatTableModule } from "@angular/material/table";
 import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { MatButtonModule } from "@angular/material/button";
     BrowserAnimationsModule,
     MatTableModule,
     MatButtonModule,
+    MatIconModule,
     ModalModule.forRoot(),
   ],
   providers: [

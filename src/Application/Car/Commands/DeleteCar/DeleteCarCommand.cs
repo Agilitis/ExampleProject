@@ -22,7 +22,7 @@ namespace ExampleProject.Application.Car.Commands.DeleteCar
 
         public async Task<Unit> Handle(DeleteCarCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _context.Cars.FindAsync(request.Id, cancellationToken);
+            var entity = await _context.Cars.FindAsync(request.Id);
 
             if (entity == null)
             {
