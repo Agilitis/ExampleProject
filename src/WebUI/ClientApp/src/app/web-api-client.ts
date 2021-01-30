@@ -1843,7 +1843,7 @@ export class PaginatedListOfTodoItemDto implements IPaginatedListOfTodoItemDto {
         data["totalCount"] = this.totalCount;
         data["hasPreviousPage"] = this.hasPreviousPage;
         data["hasNextPage"] = this.hasNextPage;
-        return data; 
+        return data;
     }
 }
 
@@ -1899,7 +1899,7 @@ export class TodoItemDto implements ITodoItemDto {
         data["done"] = this.done;
         data["priority"] = this.priority;
         data["note"] = this.note;
-        return data; 
+        return data;
     }
 }
 
@@ -1943,7 +1943,7 @@ export class CreateTodoItemCommand implements ICreateTodoItemCommand {
         data = typeof data === 'object' ? data : {};
         data["listId"] = this.listId;
         data["title"] = this.title;
-        return data; 
+        return data;
     }
 }
 
@@ -1986,7 +1986,7 @@ export class UpdateTodoItemCommand implements IUpdateTodoItemCommand {
         data["id"] = this.id;
         data["title"] = this.title;
         data["done"] = this.done;
-        return data; 
+        return data;
     }
 }
 
@@ -2033,7 +2033,7 @@ export class UpdateTodoItemDetailCommand implements IUpdateTodoItemDetailCommand
         data["listId"] = this.listId;
         data["priority"] = this.priority;
         data["note"] = this.note;
-        return data; 
+        return data;
     }
 }
 
@@ -2098,7 +2098,7 @@ export class TodosVm implements ITodosVm {
             for (let item of this.lists)
                 data["lists"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 }
 
@@ -2138,7 +2138,7 @@ export class PriorityLevelDto implements IPriorityLevelDto {
         data = typeof data === 'object' ? data : {};
         data["value"] = this.value;
         data["name"] = this.name;
-        return data; 
+        return data;
     }
 }
 
@@ -2192,7 +2192,7 @@ export class TodoListDto implements ITodoListDto {
             for (let item of this.items)
                 data["items"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 }
 
@@ -2231,7 +2231,7 @@ export class CreateTodoListCommand implements ICreateTodoListCommand {
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
         data["title"] = this.title;
-        return data; 
+        return data;
     }
 }
 
@@ -2270,7 +2270,7 @@ export class UpdateTodoListCommand implements IUpdateTodoListCommand {
         data = typeof data === 'object' ? data : {};
         data["id"] = this.id;
         data["title"] = this.title;
-        return data; 
+        return data;
     }
 }
 
@@ -2316,7 +2316,7 @@ export class WeatherForecast implements IWeatherForecast {
         data["temperatureC"] = this.temperatureC;
         data["temperatureF"] = this.temperatureF;
         data["summary"] = this.summary;
-        return data; 
+        return data;
     }
 }
 
@@ -2362,7 +2362,7 @@ export abstract class AuditableEntity implements IAuditableEntity {
         data["createdBy"] = this.createdBy;
         data["lastModified"] = this.lastModified ? this.lastModified.toISOString() : <any>undefined;
         data["lastModifiedBy"] = this.lastModifiedBy;
-        return data; 
+        return data;
     }
 }
 
@@ -2381,6 +2381,8 @@ export class Car extends AuditableEntity implements ICar {
     isAvailable?: boolean;
     type?: CarType;
     carColor?: string | undefined;
+    domainEvents?: DomainEvent[] | undefined;
+    carTypeName: string;
 
     constructor(data?: ICar) {
         super(data);
@@ -2400,6 +2402,11 @@ export class Car extends AuditableEntity implements ICar {
             this.isAvailable = _data["isAvailable"];
             this.type = _data["type"];
             this.carColor = _data["carColor"];
+            if (Array.isArray(_data["domainEvents"])) {
+                this.domainEvents = [] as any;
+                for (let item of _data["domainEvents"])
+                    this.domainEvents!.push(DomainEvent.fromJS(item));
+            }
         }
     }
 
@@ -2423,8 +2430,13 @@ export class Car extends AuditableEntity implements ICar {
         data["isAvailable"] = this.isAvailable;
         data["type"] = this.type;
         data["carColor"] = this.carColor;
+        if (Array.isArray(this.domainEvents)) {
+            data["domainEvents"] = [];
+            for (let item of this.domainEvents)
+                data["domainEvents"].push(item.toJSON());
+        }
         super.toJSON(data);
-        return data; 
+        return data;
     }
 }
 
@@ -2436,6 +2448,7 @@ export interface ICar extends IAuditableEntity {
     isAvailable?: boolean;
     type?: CarType;
     carColor?: string | undefined;
+    domainEvents?: DomainEvent[] | undefined;
 }
 
 export class Accessory implements IAccessory {
@@ -2486,7 +2499,7 @@ export class Accessory implements IAccessory {
             for (let item of this.cars)
                 data["cars"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 }
 
@@ -2507,6 +2520,44 @@ export enum CarType {
     Mazda = 5,
     Suzuki = 6,
     AlfaRomeo = 7,
+}
+
+export abstract class DomainEvent implements IDomainEvent {
+    isPublished?: boolean;
+    dateOccurred?: Date;
+
+    constructor(data?: IDomainEvent) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(_data?: any) {
+        if (_data) {
+            this.isPublished = _data["isPublished"];
+            this.dateOccurred = _data["dateOccurred"] ? new Date(_data["dateOccurred"].toString()) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): DomainEvent {
+        data = typeof data === 'object' ? data : {};
+        throw new Error("The abstract class 'DomainEvent' cannot be instantiated.");
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["isPublished"] = this.isPublished;
+        data["dateOccurred"] = this.dateOccurred ? this.dateOccurred.toISOString() : <any>undefined;
+        return data;
+    }
+}
+
+export interface IDomainEvent {
+    isPublished?: boolean;
+    dateOccurred?: Date;
 }
 
 export class GetAllServiceQuery implements IGetAllServiceQuery {
@@ -2532,7 +2583,7 @@ export class GetAllServiceQuery implements IGetAllServiceQuery {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        return data; 
+        return data;
     }
 }
 
@@ -2581,7 +2632,7 @@ export class CreateServiceCommand implements ICreateServiceCommand {
             for (let item of this.carPartsToReplace)
                 data["carPartsToReplace"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 }
 
@@ -2625,7 +2676,7 @@ export class CarPart implements ICarPart {
         data["id"] = this.id;
         data["price"] = this.price;
         data["name"] = this.name;
-        return data; 
+        return data;
     }
 }
 
@@ -2669,7 +2720,7 @@ export class UpdateServiceCommand implements IUpdateServiceCommand {
         data["id"] = this.id;
         data["carId"] = this.carId;
         data["servicePartnerId"] = this.servicePartnerId;
-        return data; 
+        return data;
     }
 }
 
@@ -2702,7 +2753,7 @@ export class GetAllServicePartnerQuery implements IGetAllServicePartnerQuery {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        return data; 
+        return data;
     }
 }
 
@@ -2743,7 +2794,7 @@ export class CreateServicePartnerCommand implements ICreateServicePartnerCommand
         data["name"] = this.name;
         data["serviceFee"] = this.serviceFee;
         data["address"] = this.address;
-        return data; 
+        return data;
     }
 }
 
@@ -2790,7 +2841,7 @@ export class UpdateServicePartnerCommand implements IUpdateServicePartnerCommand
         data["address"] = this.address;
         data["name"] = this.name;
         data["serviceFee"] = this.serviceFee;
-        return data; 
+        return data;
     }
 }
 
@@ -2824,7 +2875,7 @@ export class GetAllRentQuery implements IGetAllRentQuery {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        return data; 
+        return data;
     }
 }
 
@@ -2868,7 +2919,7 @@ export class CreateRentCommand implements ICreateRentCommand {
         data["rentLengthInDays"] = this.rentLengthInDays;
         data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
         data["userId"] = this.userId;
-        return data; 
+        return data;
     }
 }
 
@@ -2913,7 +2964,7 @@ export class UpdateRentCommand implements IUpdateRentCommand {
         data["id"] = this.id;
         data["rentLengthInDays"] = this.rentLengthInDays;
         data["startDate"] = this.startDate ? this.startDate.toISOString() : <any>undefined;
-        return data; 
+        return data;
     }
 }
 
@@ -2946,7 +2997,7 @@ export class GetAllCarsQuery implements IGetAllCarsQuery {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        return data; 
+        return data;
     }
 }
 
@@ -3001,7 +3052,7 @@ export class CreateCarCommand implements ICreateCarCommand {
             for (let item of this.accessories)
                 data["accessories"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 }
 
@@ -3058,7 +3109,7 @@ export class UpdateCarCommand implements IUpdateCarCommand {
             for (let item of this.accessories)
                 data["accessories"].push(item.toJSON());
         }
-        return data; 
+        return data;
     }
 }
 
@@ -3092,7 +3143,7 @@ export class GetAllCarPartQuery implements IGetAllCarPartQuery {
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
-        return data; 
+        return data;
     }
 }
 
@@ -3130,7 +3181,7 @@ export class CreateCarPartCommand implements ICreateCarPartCommand {
         data = typeof data === 'object' ? data : {};
         data["name"] = this.name;
         data["price"] = this.price;
-        return data; 
+        return data;
     }
 }
 
@@ -3173,7 +3224,7 @@ export class UpdateCarPartCommand implements IUpdateCarPartCommand {
         data["id"] = this.id;
         data["name"] = this.name;
         data["price"] = this.price;
-        return data; 
+        return data;
     }
 }
 

@@ -8,6 +8,7 @@ using ExampleProject.Domain.Enums;
 using ExampleProject.Domain.Entities;
 using ExampleProject.Domain.ValueObjects;
 using MediatR;
+using ExampleProject.Domain.Events;
 
 namespace ExampleProject.Application.Car.Commands.CreateCar
 {
@@ -46,7 +47,7 @@ namespace ExampleProject.Application.Car.Commands.CreateCar
                 car.Accessories.Add(entity);
             }
 
-            car.DomainEvents.Add()
+            car.DomainEvents.Add(new CarCreatedEvent(car));
 
             _context.Cars.Add(car);
 

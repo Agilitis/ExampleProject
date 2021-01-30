@@ -23,6 +23,7 @@ import { ServicePartnersComponent } from './service-partners/service-partners.co
 import { ServicesComponent } from './services/services.component';
 import { ApiInterceptor } from "src/app/interceptors/ApiInterceptor";
 import { MatTableModule } from "@angular/material/table";
+import { MatButtonModule } from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { MatTableModule } from "@angular/material/table";
     ]),
     BrowserAnimationsModule,
     MatTableModule,
+    MatButtonModule,
     ModalModule.forRoot(),
   ],
   providers: [

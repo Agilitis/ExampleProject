@@ -2,6 +2,7 @@
 using ExampleProject.Domain.ValueObjects;
 using ExampleProject.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -48,6 +49,72 @@ namespace ExampleProject.Infrastructure.Persistence
                         new TodoItem { Title = "Water" }
                     }
                 });
+
+
+                await context.SaveChangesAsync();
+            }
+
+            if (!context.Cars.Any())
+            {
+
+                var carAccessory1 = new Accessory
+                {
+                    Name = "Airconditioner",
+                    MarketPrice = 80000,
+                    RentPrice = 200
+                };
+
+                var carAccessory2 = new Accessory
+                {
+                    Name = "GPS",
+                    MarketPrice = 60000,
+                    RentPrice = 100
+                };
+
+                var carAccessory3 = new Accessory
+                {
+                    Name = "Rear Camera",
+                    MarketPrice = 40000,
+                    RentPrice = 50
+                };
+
+                var cars = new List<Car>
+                {
+                    new Car
+                    {
+                        CarColor = CarColor.Blue,
+                        Accessories = new List<Accessory>{
+                            carAccessory1,
+                            carAccessory2
+                    },
+                        Type = Domain.Enums.CarType.Mazda,
+                        MarketPrice = 3500000,
+                        DailyRentPrice = 7000
+                    },
+                    new Car
+                    {
+                        CarColor = CarColor.Red,
+                        Accessories = new List<Accessory>{
+                            carAccessory1
+                    },
+                        Type = Domain.Enums.CarType.Audi,
+                        MarketPrice = 2500000,
+                        DailyRentPrice = 6000
+                    },
+                    new Car
+                    {
+                        CarColor = CarColor.Grey,
+                        Accessories = new List<Accessory>{
+                            carAccessory1,
+                            carAccessory3
+                    },
+                        Type = Domain.Enums.CarType.Audi,
+                        MarketPrice = 6000000,
+                        DailyRentPrice = 10000,
+                    }
+                };
+
+                context.Cars.AddRange(cars);
 
                 await context.SaveChangesAsync();
             }

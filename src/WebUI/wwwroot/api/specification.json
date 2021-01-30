@@ -1535,6 +1535,13 @@
               "carColor": {
                 "type": "string",
                 "nullable": true
+              },
+              "domainEvents": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "$ref": "#/components/schemas/DomainEvent"
+                }
               }
             }
           }
@@ -1592,6 +1599,20 @@
           6,
           7
         ]
+      },
+      "DomainEvent": {
+        "type": "object",
+        "x-abstract": true,
+        "additionalProperties": false,
+        "properties": {
+          "isPublished": {
+            "type": "boolean"
+          },
+          "dateOccurred": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
       },
       "AuditableEntity": {
         "type": "object",
