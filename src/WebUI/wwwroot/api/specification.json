@@ -1518,6 +1518,10 @@
                   "$ref": "#/components/schemas/Accessory"
                 }
               },
+              "carTypeName": {
+                "type": "string",
+                "nullable": true
+              },
               "marketPrice": {
                 "type": "integer",
                 "format": "int32"
@@ -1841,6 +1845,9 @@
             "items": {
               "$ref": "#/components/schemas/Accessory"
             }
+          },
+          "type": {
+            "$ref": "#/components/schemas/CarType"
           }
         }
       },

@@ -2376,6 +2376,7 @@ export interface IAuditableEntity {
 export class Car extends AuditableEntity implements ICar {
     id?: number;
     accessories?: Accessory[] | undefined;
+    carTypeName?: string | undefined;
     marketPrice?: number;
     dailyRentPrice?: number;
     isAvailable?: boolean;
@@ -2396,6 +2397,7 @@ export class Car extends AuditableEntity implements ICar {
                 for (let item of _data["accessories"])
                     this.accessories!.push(Accessory.fromJS(item));
             }
+            this.carTypeName = _data["carTypeName"];
             this.marketPrice = _data["marketPrice"];
             this.dailyRentPrice = _data["dailyRentPrice"];
             this.isAvailable = _data["isAvailable"];
@@ -2424,6 +2426,7 @@ export class Car extends AuditableEntity implements ICar {
             for (let item of this.accessories)
                 data["accessories"].push(item.toJSON());
         }
+        data["carTypeName"] = this.carTypeName;
         data["marketPrice"] = this.marketPrice;
         data["dailyRentPrice"] = this.dailyRentPrice;
         data["isAvailable"] = this.isAvailable;
@@ -2442,6 +2445,7 @@ export class Car extends AuditableEntity implements ICar {
 export interface ICar extends IAuditableEntity {
     id?: number;
     accessories?: Accessory[] | undefined;
+    carTypeName?: string | undefined;
     marketPrice?: number;
     dailyRentPrice?: number;
     isAvailable?: boolean;
@@ -3068,6 +3072,7 @@ export class UpdateCarCommand implements IUpdateCarCommand {
     marketPrice?: number;
     dailyRentPrice?: number;
     accessories?: Accessory[] | undefined;
+    type?: CarType;
 
     constructor(data?: IUpdateCarCommand) {
         if (data) {
@@ -3088,6 +3093,7 @@ export class UpdateCarCommand implements IUpdateCarCommand {
                 for (let item of _data["accessories"])
                     this.accessories!.push(Accessory.fromJS(item));
             }
+            this.type = _data["type"];
         }
     }
 
@@ -3108,6 +3114,7 @@ export class UpdateCarCommand implements IUpdateCarCommand {
             for (let item of this.accessories)
                 data["accessories"].push(item.toJSON());
         }
+        data["type"] = this.type;
         return data; 
     }
 }
@@ -3117,6 +3124,7 @@ export interface IUpdateCarCommand {
     marketPrice?: number;
     dailyRentPrice?: number;
     accessories?: Accessory[] | undefined;
+    type?: CarType;
 }
 
 export class GetAllCarPartQuery implements IGetAllCarPartQuery {

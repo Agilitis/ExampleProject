@@ -1,0 +1,46 @@
+<h1>Create new car</h1>
+<form [formGroup]="carForm" (ngSubmit)="onFormSubmit()">
+
+  <p>
+    <mat-form-field appearance="outline">
+      <mat-label>Type of car</mat-label>
+      <mat-select formControlName="type">
+        <mat-option *ngFor="let type of carType" [value]="type">{{type}}</mat-option>
+      </mat-select>
+      <mat-icon matSuffix>directions_car</mat-icon>
+      <mat-error *ngIf="carForm.controls.type.touched && carForm.controls.type.invalid">
+        <span *ngIf="carForm.controls.type.errors.required">This field is mandatory.</span>
+      </mat-error>
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field appearance="outline">
+      <mat-label>Market price</mat-label>
+      <input type="number" matInput formControlName="marketPrice" placeholder="Market price"/>
+      <mat-icon matSuffix>paid</mat-icon>
+      <mat-hint>Price must be more than 100k huf</mat-hint>
+      <mat-error *ngIf="carForm.controls.marketPrice.touched && carForm.controls.marketPrice.invalid">
+        <span *ngIf="carForm.controls.marketPrice.errors.required">This field is mandatory.</span>
+        <span *ngIf="carForm.controls.marketPrice.errors.min">The minimum is 100 000 HUF.</span>
+
+      </mat-error>
+    </mat-form-field>
+  </p>
+
+  <p>
+    <mat-form-field appearance="outline">
+      <mat-label>Daily rent price</mat-label>
+      <input type="number" matInput formControlName="dailyRentPrice" placeholder="Daily rent price"/>
+      <mat-icon matSuffix>car_rental</mat-icon>
+      <mat-hint>Price must be more than 1000 huf</mat-hint>
+      <mat-error *ngIf="carForm.controls.dailyRentPrice.touched && carForm.controls.dailyRentPrice.invalid">
+        <span *ngIf="carForm.controls.dailyRentPrice.errors.required">This field is mandatory.</span>
+        <span *ngIf="carForm.controls.dailyRentPrice.errors.min">The minimum is 2000 HUF.</span>
+      </mat-error>
+    </mat-form-field>
+  </p>
+
+  <button mat-raised-button color="primary" type="submit" [disabled]="!carForm.valid">Create</button>
+
+</form>

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using ExampleProject.Application.Common.Exceptions;
 using ExampleProject.Application.Common.Interfaces;
 using ExampleProject.Domain.Entities;
+using ExampleProject.Domain.Enums;
 using MediatR;
 
 namespace ExampleProject.Application.Car.Commands.UpdateCar
@@ -15,6 +16,8 @@ namespace ExampleProject.Application.Car.Commands.UpdateCar
         public int MarketPrice { get; set; }
         public int DailyRentPrice { get; set; }
         public List<Accessory> Accessories { get; set; }
+
+        public CarType Type { get; set; }
     }
     
     public class UpdateCarCommandHandler : IRequestHandler<UpdateCarCommand, Unit>
@@ -38,6 +41,7 @@ namespace ExampleProject.Application.Car.Commands.UpdateCar
             entity.MarketPrice = request.MarketPrice;
             entity.DailyRentPrice = request.DailyRentPrice;
             entity.Accessories = request.Accessories;
+            entity.Type = request.Type;
             
             await _context.SaveChangesAsync(cancellationToken);
             

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using ExampleProject.Domain.Common;
 using ExampleProject.Domain.Enums;
@@ -13,6 +14,9 @@ namespace ExampleProject.Domain.Entities
         private int _dailyRentPrice;
         public int Id { get; set; }
         public IList<Accessory> Accessories { get; set; } = new List<Accessory>();
+        
+        [NotMapped]
+        public string CarTypeName { get; set; }
         public int MarketPrice
         {
             get

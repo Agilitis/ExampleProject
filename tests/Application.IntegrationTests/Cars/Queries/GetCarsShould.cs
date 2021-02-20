@@ -25,7 +25,7 @@ namespace ExampleProject.Application.IntegrationTests.Cars.Queries
                 {
                     DailyRentPrice = 200
                 },
-                new Domain.Entities.Car()
+                new()
                 {
                     DailyRentPrice = 300,
                     Accessories = new List<Accessory>
@@ -43,12 +43,14 @@ namespace ExampleProject.Application.IntegrationTests.Cars.Queries
             {
                 await AddAsync(car);
             }
-            
+
             var query = new GetAllCarsQuery();
 
             var result = await SendAsync(query);
 
-            result.Should().NotBeEmpty();
+            result.Should().SatisfyRespectively(car1 => { car1.DailyRentPrice = 100; },
+                car2 => { car2.DailyRentPrice = 200; },
+                car3 => { car3.DailyRentPrice = 300; });
         }
     }
 }
