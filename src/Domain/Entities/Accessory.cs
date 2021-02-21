@@ -11,4 +11,5 @@ namespace ExampleProject.Domain.Entities
         public int RentPrice { get; set; }
         public IList<Car> Cars { get; set; } = new List<Car>();
     }
+    
 }

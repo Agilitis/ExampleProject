@@ -33,7 +33,7 @@ namespace ExampleProject.Domain.UnitTests.Entities
             {
                 Car = car,
                 StartDate = DateTime.Now,
-                RentLengthInDays = 10
+                RentLength = 10
             };
 
             var calculatedRentPrice = rent.RentPrice;

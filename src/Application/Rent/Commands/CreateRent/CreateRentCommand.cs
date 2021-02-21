@@ -28,7 +28,7 @@ namespace ExampleProject.Application.Rent.Commands.CreateRent
             var rent = new Domain.Entities.Rent
             {
                 CarId = request.CarId,
-                RentLengthInDays = request.RentLengthInDays,
+                RentLength = request.RentLengthInDays,
                 StartDate = request.StartDate,
                 UserId = request.UserId
             };

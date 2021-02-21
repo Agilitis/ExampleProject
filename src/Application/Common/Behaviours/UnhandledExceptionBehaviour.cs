@@ -29,6 +29,7 @@ namespace ExampleProject.Application.Common.Behaviours
 
                 throw;
             }
+            
         }
     }
 }

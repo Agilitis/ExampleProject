@@ -27,6 +27,6 @@ namespace ExampleProject.Domain.Entities
                 return sum;
             }
         }
-
     }
+    
 }

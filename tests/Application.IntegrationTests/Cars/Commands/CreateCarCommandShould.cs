@@ -13,36 +13,21 @@ namespace ExampleProject.Application.IntegrationTests.Cars.Commands
         [Test]
         public async Task CreateCar()
         {
-            var accessory = new Accessory
+          var createCarCommand = new Car.Commands.CreateCar.CreateCarCommand
             {
-                Name = "TestAccessory",
-                MarketPrice = 100,
-                RentPrice = 10
-            };
-            
-            await AddAsync(accessory);
-            
-            var createCarCommand = new Car.Commands.CreateCar.CreateCarCommand
-            {
-                CarColor = "Blue",
-                MarketPrice = 100,
-                DailyRentPrice = 200,
+                MarketPrice = 1600000,
+                DailyRentPrice = 4500,
                 Type = CarType.Audi,
-                Accessories = new List<Accessory>
-                {
-                    accessory
-                }
             };
 
             var id = await SendAsync(createCarCommand);
 
             var car = await GetCarAsync(id);
             
-            car.CarColor.Should().Be("Blue");
-            car.MarketPrice.Should().Be(200);
-            car.DailyRentPrice.Should().Be(210);
+            car.MarketPrice.Should().Be(1600000);
+            car.DailyRentPrice.Should().Be(4500);
             car.Type.Should().Be(CarType.Audi);
-            car.Accessories.Should().NotBeEmpty();
         }
+        
     }
 }

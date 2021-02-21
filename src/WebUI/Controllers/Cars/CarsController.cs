@@ -13,16 +13,16 @@ namespace ExampleProject.WebUI.Controllers.Cars
     [Authorize]
     public class CarsController : ApiControllerBase
     {
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Car>>> GetAllCars([FromQuery] GetAllCarsQuery query)
-        {
-            return Ok(await Mediator.Send(query));
-        }
-
         [HttpPost]
         public async Task<ActionResult<int>> Create(CreateCarCommand command)
         {
             return await Mediator.Send(command);
+        }
+        
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Car>>> GetAllCars([FromQuery] GetAllCarsQuery query)
+        {
+            return Ok(await Mediator.Send(query));
         }
 
         [HttpPut("{id}")]

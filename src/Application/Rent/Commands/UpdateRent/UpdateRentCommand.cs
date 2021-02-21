@@ -26,7 +26,7 @@ namespace ExampleProject.Application.Rent.Commands.UpdateRent
                 throw new NotFoundException(nameof(entity));
             }
 
-            entity.RentLengthInDays = request.RentLengthInDays;
+            entity.RentLength = request.RentLengthInDays;
             entity.StartDate = request.StartDate;
 
             await _context.SaveChangesAsync(cancellationToken);

@@ -35,4 +35,5 @@ namespace ExampleProject.Domain.UnitTests.Entities
             calculatedPrice.Should().Be(6000);
         }
     }
+    
 }

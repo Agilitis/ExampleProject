@@ -28,5 +28,6 @@ namespace ExampleProject.Application.Car.EventHandlers
 
             return Task.CompletedTask;
         }
+        
     }
 }

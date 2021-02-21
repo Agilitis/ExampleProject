@@ -5,4 +5,5 @@ namespace ExampleProject.Infrastructure.Identity
     public class ApplicationUser : IdentityUser
     {
     }
+    
 }

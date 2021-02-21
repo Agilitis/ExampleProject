@@ -10,6 +10,7 @@ namespace ExampleProject.Domain.Entities
 {
     public class Car : AuditableEntity, IHasDomainEvent
     {
+        
         private int _marketPrice;
         private int _dailyRentPrice;
         public int Id { get; set; }
@@ -41,6 +42,7 @@ namespace ExampleProject.Domain.Entities
             }
             set => _dailyRentPrice = value;
         }
+        
         public bool IsAvailable { get; set; }
         public CarType Type { get; set; }
 
